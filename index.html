@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Strong? </title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    
+    <div class = "choices">
+    Tested Only? <input id = "tested" type="checkbox"> 
+    </br>
+
+    <div class = "choices">
+        Lbs <input id = "lbs" type="checkbox"> 
+    </br>
+    Body Weight <input id = "bodyweight" type = "number"></input>
+
+    </br>
+    Bench Press <input id = "bench" type = "number"></input>
+    </br>
+    Squat <input id = "squat" type = "number"></input>
+    </br>
+    Deadlift <input id = "deadlift" type = "number" ></input>
+    </br>
+
+    <button onclick = submitData()>Submit</button>
+
+</div>
+
+    <div id="response"></div>
+
+    
+</body>
+</html>
+
+
+<script>
+    async function submitData(){
+        const bench = document.getElementById('bench').value;
+        const squat = document.getElementById('squat').value;
+        const deadlift = document.getElementById('deadlift').value;
+        const tested = document.getElementById('tested').checked;
+        const lbs = document.getElementById('lbs').checked;
+
+
+        try{
+            const response = await fetch('http://127.0.0.1:5000/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({bench,squat,deadlift,tested,lbs}),
+            });
+            const data = await response.text();
+            document.getElementById('response').innerText = data;
+            
+        } catch(error){
+            document.getElementById('response').innerText = 'Error: ' +  error.message;
+        }
+
+        
+    }
+</script>
