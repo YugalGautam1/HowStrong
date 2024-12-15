@@ -1,5 +1,3 @@
-#his page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org.
-#You may download a copy of the data at https://gitlab.com/openpowerlifting/opl-data.
 
 
 import csv
@@ -9,7 +7,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-with open('openpowerlifting-2024-12-07-f0ae63ed.csv', 'r',encoding='utf-8') as file:
+with open('openpowerlifting-2024-12-14-deb82140.csv', 'r',encoding='utf-8') as file:
     csv_reader = csv.reader(file)
     data_table = [row for row in csv_reader]  
 

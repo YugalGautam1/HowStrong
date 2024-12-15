@@ -8,30 +8,32 @@
 </head>
 <body>
     
-    <div class = "choices">
-    Tested Only? <input id = "tested" type="checkbox"> 
-    </br>
 
     <div class = "choices">
+
+        Tested Only? <input id = "tested" type="checkbox"> 
+        </br>
         Lbs <input id = "lbs" type="checkbox"> 
+        </br>
+        Body Weight <input id = "bodyweight" type = "number"></input>
+
+        </br>
+        Bench Press <input id = "bench" type = "number"></input>
+        </br>
+        Squat <input id = "squat" type = "number"></input>
+        </br>
+        Deadlift <input id = "deadlift" type = "number" ></input>
+        </br>
+
+        <button onclick = submitData()>Submit</button>
+
+    </div>
     </br>
-    Body Weight <input id = "bodyweight" type = "number"></input>
+    <div class = "response" id="response"> </div>
 
     </br>
-    Bench Press <input id = "bench" type = "number"></input>
-    </br>
-    Squat <input id = "squat" type = "number"></input>
-    </br>
-    Deadlift <input id = "deadlift" type = "number" ></input>
-    </br>
-
-    <button onclick = submitData()>Submit</button>
-
-</div>
-
-    <div id="response"></div>
-
-    
+    <div class = "message">This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org.
+    </br> You may download a copy of the data at https://gitlab.com/openpowerlifting/opl-data.</div>
 </body>
 </html>
 
