@@ -1,5 +1,4 @@
-#his page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org.
-#You may download a copy of the data at https://gitlab.com/openpowerlifting/opl-data.
+
 
 
 import csv
@@ -9,7 +8,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-with open('openpowerlifting-2024-12-07-f0ae63ed.csv', 'r',encoding='utf-8') as file:
+with open('openpowerlifting-2024-12-14-deb82140.csv', 'r',encoding='utf-8') as file:
     csv_reader = csv.reader(file)
     data_table = [row for row in csv_reader]  
 
@@ -22,8 +21,10 @@ def submit():
     tested = data.get('tested')
     total=0
     multiplier=1
+    unit = "kgs"
     if(lbs):
         multiplier=2.20462
+        unit = "lbs"
     if(data.get('bench','').strip()):
         bench = int(data.get('bench', 0))/multiplier
         total+=bench
@@ -52,7 +53,7 @@ def submit():
                     if(float(data_table[i][25])<total):
                         x+=1  
                     y+=1
-            response = f"Your total lift is {total*multiplier} kg! This makes you stronger than {x/y*100}% of Tested Lifters "
+            response = f"Your total lift is {round(total*multiplier,3)} {unit}! This makes you stronger than {round(x/y*100,3)}% of Tested Lifters "
 
             return response
         else:
@@ -63,7 +64,7 @@ def submit():
                     if(float(data_table[i][25])<total):
                         x+=1  
                     y+=1
-            response = f"Your total lift is {total*2.20462} kg! This makes you stronger than {x/y*100}% of All Lifters"
+            response = f"Your total lift is {round(total*multiplier,3)} {unit}! This makes you stronger than {round(x/y*100,3)}% of All Lifters"
 
             return response
     return("missing vals")
