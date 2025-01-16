@@ -33,7 +33,10 @@
     </div>
     </br>
     <div class = "response" id="response"> </div>
+    </br>
 
+    </br>
+        <div class = "graph" id = "graph"> </div>
     </br>
     <div class = "message">This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org.
     </br> You may download a copy of the data at https://gitlab.com/openpowerlifting/opl-data.</div>
@@ -60,11 +63,31 @@
             });
             const data = await response.text();
             document.getElementById('response').innerText = data;
-            
+            loadHistogram();
         } catch(error){
             document.getElementById('response').innerText = 'Error: ' +  error.message;
         }
 
         
     }
+
+    async function loadHistogram() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/histogram');
+        const container = document.getElementById('graph');
+        container.innerHTML = ''; 
+        if (!response.ok) throw new Error('No Data');
+        const data = await response.json();
+
+        if (!data?.image) return; 
+        const img = document.createElement('img');
+        img.src = data.image;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.border = 'solid black';
+        container.appendChild(img);
+    } catch (error) {
+        console.error('Error generating histogram:', error);
+    }
+}
 </script>

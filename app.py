@@ -1,14 +1,19 @@
 
-
 import csv
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS 
+import matplotlib
+matplotlib.use('Agg')
+import numpy as np
+import matplotlib.pyplot as plt
+import io
+import base64
 
 app = Flask(__name__)
 CORS(app)
 
 
-with open('openpowerlifting-2024-12-21-6322a115.csv', 'r',encoding='utf-8') as file:
+with open('powerlifting-training.csv', 'r',encoding='utf-8') as file:
     csv_reader = csv.reader(file)
     data_table = [row for row in csv_reader]  
 
@@ -16,6 +21,11 @@ male = []
 male_tested = []
 female = []
 female_tested = []
+global Selection
+global position 
+Selection = None
+position = None
+
 
 for i in range(0,len(data_table)):
     if(data_table[i][1]=='M'):
@@ -40,6 +50,8 @@ female_tested=sorted(female_tested)
 
 @app.route('/submit', methods=['POST'])
 def submit():
+    global Selection
+    global position
     data = request.json
     lbs = data.get('lbs')
     tested = data.get('tested')
@@ -94,7 +106,8 @@ def submit():
                         elif(male_tested[mid]==total and male_tested[mid+1]==total):
                             high=mid-1
 
-
+                Selection = "Male Tested"
+                position = total
                 response = f"Your total lift is {round(total*multiplier,3)} {unit}! This makes you stronger than {round(percentile,3)}% of Male Tested Lifters "
 
                 return response
@@ -118,8 +131,11 @@ def submit():
                             break
                         elif(male[mid]==total and male[mid+1]==total):
                             high=mid-1
+                Selection = "Male Untested"
+                position = total
 
                 response = f"Your total lift is {round(total*multiplier,3)} {unit}! This makes you stronger than {round(percentile,3)}% of all Male Lifters"
+                return response
         else:
             if(tested):
                 percentile = 0 
@@ -142,7 +158,8 @@ def submit():
                         elif(female_tested[mid]==total and female_tested[mid+1]==total):
                             high=mid-1
 
-
+                Selection = "Female Tested"
+                position = total
                 response = f"Your total lift is {round(total*multiplier,3)} {unit}! This makes you stronger than {round(percentile,3)}% of Female Tested Lifters "
 
                 return response
@@ -166,12 +183,90 @@ def submit():
                             break
                         elif(female[mid]==total and female[mid+1]==total):
                             high=mid-1
-
+                Selection = "Female Unteested"
+                position = total
                 response = f"Your total lift is {round(total*multiplier,3)} {unit}! This makes you stronger than {round(percentile,3)}% of all Female Lifters"
         
 
             return response
+    Selection = None
+    position = None
     return("missing vals")
     
+
+
+@app.route('/histogram', methods=['GET'])
+def line_histogram():
+    global Selection
+    global position
+
+    if not Selection:
+        return ""
+
+    try:
+        threshold = position
+        data = []
+        pick = Selection.split()
+
+        if len(pick) == 2:
+            if pick[0][0] == 'M':
+                data = male_tested
+            else:
+                data = female_tested
+        else:
+            if pick[0][0] == 'M':
+                data = male
+            else:
+                data = female
+
+        data = np.array(data)
+        
+        counts, bin_edges = np.histogram(data, bins="auto")
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(bin_edges[:-1], counts, color='blue', linestyle='-')
+
+        below_threshold = bin_edges[:-1] <= threshold 
+        plt.fill_between(bin_edges[:-1], counts, where=below_threshold, color='blue', alpha=0.3)
+        
+        above_threshold = list(below_threshold)
+        find = True 
+        for i in range(0,len(above_threshold)):
+
+            if(find):
+                if(not above_threshold[i]):
+                    if(i-1>=0):
+                        above_threshold[i-1]=True
+                        find=True
+                above_threshold[i]=False
+            else:
+                above_threshold[i] = True
+
+        above_threshold = np.array(above_threshold)
+        plt.fill_between(bin_edges[:-1], counts, where=above_threshold, color='red', alpha=0.3)
+
+        plt.title(f'All data below your Total is Blue', fontsize=16, fontweight='bold')
+        plt.grid(False)
+        plt.axis('off')
+
+        for spine in plt.gca().spines.values():
+            spine.set_visible(False)
+
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight', facecolor=(180/255,180/255,180/255))  
+
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        plt.close()
+
+        image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+
+        return jsonify({"image": f"data:image/png;base64,{image_base64}"})
+
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
