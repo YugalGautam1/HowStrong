@@ -15,6 +15,23 @@
         </br>
         Lbs <input id = "lbs" type="checkbox"> 
         </br>
+        Choose a Weight Class:
+        <select name="weight" id="weight">
+        <optgroup label="Male">
+        <option value="0">44kg/97lbs</option>
+        <option value="1">48kg/105.8lbs</option>
+        <option value="2">52kg/114.6lbs</option>
+        <option value="3">56kg/123.5lbs</option>
+        <option value="4">60kg/132.3lbs</option>
+        <option value="5">67kg/147.7lbs</option>
+        <option value="6">75kg/165.3lbs</option>
+        <option value="7">82.5kg/181.9lbs</option>
+        <option value="8">90kg/198.4lbs</option>
+        <option value="9">100kg/220.5lbs</option>
+        <option value="10">110kg/242.5lbs</option>
+        <option value="11">125kg/275.6lbs</option>
+        <option value="12">(140kg/308.6lbs)+</option>
+        </select>
         <div>
             Gender:
             <label><input type="radio" name="gender" value="Male" checked> Male</label>
@@ -52,14 +69,14 @@
         const tested = document.getElementById('tested').checked;
         const lbs = document.getElementById('lbs').checked;
         const gender = document.querySelector('input[name="gender"]:checked').value;
-
+        const weight = document.getElementById('weight').value
         try{
             const response = await fetch('http://127.0.0.1:5000/submit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({bench,squat,deadlift,tested,lbs,gender}),
+                body: JSON.stringify({bench,squat,deadlift,tested,lbs,gender,weight}),
             });
             const data = await response.text();
             document.getElementById('response').innerText = data;
