@@ -80,9 +80,12 @@
             });
             const data = await response.text();
             document.getElementById('response').innerText = data;
+            document.getElementById('graph').style.display = "block";
+
             loadHistogram();
         } catch(error){
             document.getElementById('response').innerText = 'Error: ' +  error.message;
+
         }
 
         
@@ -96,7 +99,10 @@
         if (!response.ok) throw new Error('No Data');
         const data = await response.json();
 
-        if (!data?.image) return; 
+        if (!data?.image) {
+            container.style.display('none');
+            return; 
+        }
         const img = document.createElement('img');
         img.src = data.image;
         img.style.width = '100%';
