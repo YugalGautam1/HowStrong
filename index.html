@@ -17,7 +17,6 @@
         </br>
         Choose a Weight Class:
         <select name="weight" id="weight">
-        <optgroup label="Male">
         <option value="0">44kg/97lbs</option>
         <option value="1">48kg/105.8lbs</option>
         <option value="2">52kg/114.6lbs</option>
@@ -34,8 +33,10 @@
         </select>
         <div>
             Gender:
-            <label><input type="radio" name="gender" value="Male" checked> Male</label>
-            <label><input type="radio" name="gender" value="Female"> Female</label>
+            <select name="gender" id="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                </select>
         </div>
         </br>
         Bench Press <input id = "bench" type = "number"></input>
@@ -68,7 +69,7 @@
         const deadlift = document.getElementById('deadlift').value;
         const tested = document.getElementById('tested').checked;
         const lbs = document.getElementById('lbs').checked;
-        const gender = document.querySelector('input[name="gender"]:checked').value;
+        const gender = document.getElementById('gender').value
         const weight = document.getElementById('weight').value
         try{
             const response = await fetch('http://127.0.0.1:5000/submit', {

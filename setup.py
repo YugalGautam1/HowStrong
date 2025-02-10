@@ -1,12 +1,12 @@
 import csv
 
-with open('data/openpowerlifting-2024-12-14-deb82140.csv', 'r', encoding='utf-8') as file:
+with open('data\openpowerlifting-2025-02-01-58ad7467.csv', 'r', encoding='utf-8') as file:
     csv_reader = csv.reader(file)
     data_table = [row for row in csv_reader]  
 
 cleandata = []
 for i in range(1,len(data_table)):
-    if(data_table[i][2]=='SBD'):
+    if(data_table[i][2]=='SBD' and (data_table[i][3]=='Raw' or data_table[i][3]=='Wraps')):
         p = data_table[i][25]
         weight = data_table[i][8]
         if(p.strip() and weight.strip()):
