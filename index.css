@@ -10,7 +10,8 @@ body{
     padding: 20px;           
     background-color: rgb(180, 180, 180);
     border: 2px solid #000;
-    width: 40%;              
+    width: 400px;
+    max-width: 90%;              
     box-sizing: border-box;  
     text-align: center;
 }
@@ -19,7 +20,8 @@ body{
     background-color: rgb(180, 180, 180);
     border: 2px dotted #000;
     padding: 20px;           
-    width: 40%;              
+    width: 400px;
+    max-width: 90%;               
     box-sizing: border-box;  
     text-align: center;
     top:0
@@ -28,9 +30,10 @@ body{
 .message{
     background-color: rgb(180, 180, 180);
     border: 2px dotted #000;
-    padding: 20px;           
-    font-size: 70%;
-    position: absolute; 
+    padding: 10px;           
+    font-size: 50%;
+    position: fixed; 
+
     bottom: 0; 
     right: 0;
     
@@ -40,7 +43,8 @@ body{
     background-color: rgb(180, 180, 180);
     border: 2px dotted #000;
     padding: 20px;           
-    width: 40%;              
+    width: 400px;
+    max-width: 90%;  
     box-sizing: border-box;  
     text-align: center;
     top:0
