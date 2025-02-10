@@ -100,10 +100,6 @@
         if (!response.ok) throw new Error('No Data');
         const data = await response.json();
 
-        if (!data?.image) {
-            container.style.display('none');
-            return; 
-        }
         const img = document.createElement('img');
         img.src = data.image;
         img.style.width = '100%';
