@@ -17,6 +17,13 @@ with open('data/cleandata.csv', 'r', encoding='utf-8') as file:
     csv_reader = csv.reader(file)
     data_table = [row for row in csv_reader]
 
+@app.route('/submitScore',methods=['POST'])
+def submitScore():
+    lbs = data.get('lbs')
+    multiplier = 1
+    if(lbs=='1'):
+        multiplier = 2.20462 
+    total=0
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -30,8 +37,19 @@ def submit():
     total=0
     multiplier=1
     unit = "kgs"
+    if(data.get('bench','').strip() and data.get('squat','').strip() and data.get('deadlift','').strip()):
+        bench = float(data.get('bench', 0))/multiplier
+        total+=bench
+        squat = float(data.get('squat', 0))/multiplier
+        total+=squat
+        deadlift = float(data.get('deadlift', 0))/multiplier
+        total+=deadlift
+
+    else:
+        return ("missing values")
     
-    if(lbs):
+    
+    if(lbs=='1'):
         multiplier=2.20462
         unit = "lbs"
     if(data.get('bench','').strip()):

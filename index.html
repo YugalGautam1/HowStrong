@@ -13,7 +13,11 @@
 
         Tested Only? <input id = "tested" type="checkbox"> 
         </br>
-        Lbs <input id = "lbs" type="checkbox"> 
+        Units: <select name = 'units' id = 'units'> 
+            <option value ="0">kg</option>
+            <option value="1">lbs</option>
+        </select>
+
         </br>
         Choose a Weight Class:
         <select name="weight" id="weight">
@@ -68,7 +72,7 @@
         const squat = document.getElementById('squat').value;
         const deadlift = document.getElementById('deadlift').value;
         const tested = document.getElementById('tested').checked;
-        const lbs = document.getElementById('lbs').checked;
+        const lbs = document.getElementById('units').value
         const gender = document.getElementById('gender').value
         const weight = document.getElementById('weight').value
         try{
@@ -81,9 +85,7 @@
             });
             const data = await response.text();
             document.getElementById('response').innerText = data;
-            document.getElementById('graph').style.display = "block";
 
-            loadHistogram();
         } catch(error){
             document.getElementById('response').innerText = 'Error: ' +  error.message;
 
