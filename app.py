@@ -11,7 +11,6 @@ import base64
 
 app = Flask(__name__)
 CORS(app)
-data = []
 
 with open('data/cleandata.csv', 'r', encoding='utf-8') as file:
     csv_reader = csv.reader(file)
@@ -19,11 +18,14 @@ with open('data/cleandata.csv', 'r', encoding='utf-8') as file:
 
 @app.route('/submitScore',methods=['POST'])
 def submitScore():
+    data = request.json
     lbs = data.get('lbs')
     multiplier = 1
     if(lbs=='1'):
         multiplier = 2.20462 
     total=0
+    
+    return "Response Buddy"
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -37,6 +39,10 @@ def submit():
     total=0
     multiplier=1
     unit = "kgs"
+        
+    if(lbs=='1'):
+        multiplier=2.20462
+        unit = "lbs"
     if(data.get('bench','').strip() and data.get('squat','').strip() and data.get('deadlift','').strip()):
         bench = float(data.get('bench', 0))/multiplier
         total+=bench
@@ -48,30 +54,8 @@ def submit():
     else:
         return ("missing values")
     
-    
-    if(lbs=='1'):
-        multiplier=2.20462
-        unit = "lbs"
-    if(data.get('bench','').strip()):
-        bench = float(data.get('bench', 0))/multiplier
-        total+=bench
-    else:
-        bench = None
 
-    if(data.get('squat','').strip()):
-        squat = float(data.get('squat', 0))/multiplier
-        total+=squat
-    else:
-        squat = None
-    
-    if(data.get('deadlift','').strip()):
-        deadlift = float(data.get('deadlift', 0))/multiplier
-        total+=deadlift
-    else:
-        deadlift = None
-    
-    
-    if(bench and squat and deadlift):
+    if(total!=0):
         test = ""
         if(gender == 'Male'):
             value = 0 
@@ -86,7 +70,6 @@ def submit():
         value+=int(weightclass)
         
         percentile = 0 
-        total = bench+squat+deadlift
         position = total
         high = len(data_table[value])-1
         low = 1
@@ -97,8 +80,6 @@ def submit():
         else:
             while(low<=high):
                 mid = (low+high)//2
-
-
                 if(float(data_table[value][mid])>total):
                    high = mid-1
                 elif(float(data_table[value][mid])<total and float(data_table[value][mid+1])<total):

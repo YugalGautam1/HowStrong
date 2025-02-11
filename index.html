@@ -85,6 +85,7 @@
             });
             const data = await response.text();
             document.getElementById('response').innerText = data;
+            loadHistogram();
 
         } catch(error){
             document.getElementById('response').innerText = 'Error: ' +  error.message;
