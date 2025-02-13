@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>How Strong? </title>
     <link rel="stylesheet" href="index.css">
+
 </head>
 <body>
     
-
+    <div class = "scores"> <a href = '/scores.html'><button>Calculate your powerlifting Scores</button></a> </div>
     <div class = "choices">
 
         Tested Only? <input id = "tested" type="checkbox"> 
@@ -43,11 +45,11 @@
                 </select>
         </div>
         </br>
-        Bench Press <input id = "bench" type = "number"></input>
+        Bench Press <input id = "bench" type = "number" min="0"></input>
         </br>
-        Squat <input id = "squat" type = "number"></input>
+        Squat <input id = "squat" type = "number" min="0"></input>
         </br>
-        Deadlift <input id = "deadlift" type = "number" ></input>
+        Deadlift <input id = "deadlift" type = "number" min="0"></input>
         </br>
 
         <button onclick = submitData()>Submit</button>
@@ -96,21 +98,23 @@
     }
 
     async function loadHistogram() {
-    try {
-        const response = await fetch('http://127.0.0.1:5000/histogram');
-        const container = document.getElementById('graph');
-        container.innerHTML = ''; 
-        if (!response.ok) throw new Error('No Data');
-        const data = await response.json();
+        try {
+            const response = await fetch('http://127.0.0.1:5000/histogram');
+            const container = document.getElementById('graph');
+            container.innerHTML = ''; 
+            if (!response.ok) throw new Error('No Data');
+            const data = await response.json();
 
-        const img = document.createElement('img');
-        img.src = data.image;
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.border = 'solid black';
-        container.appendChild(img);
-    } catch (error) {
-        console.error('Error generating histogram:', error);
-    }
-}
+            const img = document.createElement('img');
+            img.src = data.image;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.border = 'solid black';
+            container.appendChild(img);
+        } catch (error) {
+            console.error('Error generating histogram:', error);
+        }
+    }   
+
+
 </script>

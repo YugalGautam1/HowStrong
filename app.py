@@ -20,12 +20,50 @@ with open('data/cleandata.csv', 'r', encoding='utf-8') as file:
 def submitScore():
     data = request.json
     lbs = data.get('lbs')
+    gender = data.get('gender') 
+
     multiplier = 1
     if(lbs=='1'):
         multiplier = 2.20462 
     total=0
+    dots = [[-0.000001093,0.0007391293 ,-0.1918759221,24.0900756,-307.75076],[-0.0000010706,0.0005158568,-0.1126655495,13.6175032,-57.96288]]
+    value = 0 
+    if(gender=='Female'):
+        value=1
     
-    return "Response Buddy"
+    if(data.get('weight','').strip() and data.get('bench','').strip() and data.get('squat','').strip() and data.get('deadlift','').strip()):
+        bench = float(data.get('bench', 0))/multiplier
+        total+=bench
+        squat = float(data.get('squat', 0))/multiplier
+        total+=squat
+        deadlift = float(data.get('deadlift', 0))/multiplier
+        total+=deadlift
+        bodyweight = float(data.get('weight',0))/multiplier
+        if(value == 1 and bodyweight<15):
+            return "Male Bodyweight must be at least 15kg or 33.07 lbs"
+        elif(value ==1 and bodyweight>228):
+            return "Maximum Male bodyweight is 228kg or 502.65 lbs"
+        elif(value==0 and bodyweight<5):
+            return "Male Bodyweight must be at least 5kg or 11.03 lbs"
+        elif(value==0 and bodyweight>153):
+            return "Maximum Male bodyweight is 153kg or 337.31 lbs"
+
+        
+
+        D = dots[value][-1]
+        for i in range(len(dots[value])-2,-1,-1):
+            D+=dots[value][i]*pow(bodyweight,len(dots[value])-1-i)
+        dots = 500*total/D
+        return f"Your dots score is {round(dots,3)}"
+
+    else:
+        return "missing vals"
+
+
+
+
+
+    
 
 @app.route('/submit', methods=['POST'])
 def submit():

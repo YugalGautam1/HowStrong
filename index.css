@@ -37,7 +37,16 @@ body{
     right: 0;
     
 }
-
+.scores{
+    background-color: rgb(180, 180, 180);
+    border: 2px dotted #000;
+    padding: 10px;           
+    font-size: 50%;
+    position: fixed; 
+    top: 0; 
+    right: 0;
+    
+}
 .graph{
     background-color: rgb(180, 180, 180);
     border: 2px dotted #000;

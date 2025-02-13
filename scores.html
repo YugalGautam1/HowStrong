@@ -9,7 +9,8 @@
 </head>
 <body>
 <div>
-    
+    <div class = "index"> <a href = '/index.html'><button>Calculate your powerlifting percentile</button></a> </div>
+
     <div class = "choices">
 
         Units: <select name = 'units' id = 'units'> 
@@ -17,7 +18,7 @@
             <option value="1">lbs</option>
         </select>
         <br>
-        Your body weight:<input id = "weight" type = "number"></input>
+        Your body weight:<input id = "weight" type = "number" min="0"></input>
         <div>
             Gender:
             <select name="gender" id="gender">
@@ -26,11 +27,11 @@
                 </select>
         </div>
         </br>
-        Bench Press <input id = "bench" type = "number"></input>
+        Bench Press <input id = "bench" type = "number" min="0"></input>
         </br>
-        Squat <input id = "squat" type = "number"></input>
+        Squat <input id = "squat" type = "number" min="0"></input>
         </br>
-        Deadlift <input id = "deadlift" type = "number" ></input>
+        Deadlift <input id = "deadlift" type = "number" min="0"></input>
         </br>
 
         <button onclick = submitData()>Submit</button>
