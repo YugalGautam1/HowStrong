@@ -67,8 +67,7 @@ def submitScore():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    global position
-    global value
+
     data = request.json
     lbs = data.get('lbs')
     tested = data.get('tested')
@@ -137,22 +136,42 @@ def submit():
         return response
 
     
-    position = None
     return("missing vals")
     
 
 
-@app.route('/histogram', methods=['GET'])
+@app.route('/histogram', methods=['POST'])
 def line_histogram():
-    
-    global value
-    global position
+    data = request.json
+    lbs = data.get('lbs')
+    tested = data.get('tested')
+    gender = data.get('gender')
+    weightclass = data.get('weight')
+    total=0
+    multiplier=1
 
-    if not position:
-        return ""
+    if(lbs=='1'):
+        multiplier=2.20462
+    if(data.get('bench','').strip() and data.get('squat','').strip() and data.get('deadlift','').strip()):
+        bench = float(data.get('bench', 0))/multiplier
+        total+=bench
+        squat = float(data.get('squat', 0))/multiplier
+        total+=squat
+        deadlift = float(data.get('deadlift', 0))/multiplier
+        total+=deadlift
 
+        if(gender == 'Male'):
+            value = 0
+            if(tested):
+                value=13
+        else:
+            value = 26
+            if(tested):
+                value = 39
+        value+=int(weightclass)
     try:
-        threshold = position
+
+        threshold = total
         data = data_table[value][1:]
 
         for i in range(0,len(data)):
@@ -191,7 +210,8 @@ def line_histogram():
             spine.set_visible(False)
 
         buffer = io.BytesIO()
-        plt.savefig(buffer, format='png', bbox_inches='tight', facecolor=(180/255,180/255,180/255))  
+        
+        plt.savefig(buffer, format='png', bbox_inches='tight', facecolor=("#7E8F92"))  
 
         plt.savefig(buffer, format='png', bbox_inches='tight')
         buffer.seek(0)
@@ -203,6 +223,8 @@ def line_histogram():
 
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+    return jsonify({"Missing values"})
+
 
 if __name__ == '__main__':
     app.run(debug=True)

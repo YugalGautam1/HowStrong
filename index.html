@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <meta name="description" content="Find how strong you are by percentile powerlifting standards! Visual Graph percentiles as well. Bench, Squat, Deadlift.">
     <title>How Strong? </title>
     <link rel="stylesheet" href="index.css">
 
 </head>
 <body>
-    
     <div class = "scores"> <a href = '/scores.html'><button>Calculate your powerlifting Scores</button></a> </div>
+    <div class = "title">How Strong?</div>
+    <div class = "mainholder">
     <div class = "choices">
+        <div class = "choices-text">
 
         Tested Only? <input id = "tested" type="checkbox"> 
         </br>
@@ -21,7 +23,7 @@
         </select>
 
         </br>
-        Choose a Weight Class:
+        Weight Class:
         <select name="weight" id="weight">
         <option value="0">44kg/97lbs</option>
         <option value="1">48kg/105.8lbs</option>
@@ -44,24 +46,26 @@
                 <option value="Female">Female</option>
                 </select>
         </div>
+        Bench Press: <input id = "bench" type = "number" min="0"></input>
         </br>
-        Bench Press <input id = "bench" type = "number" min="0"></input>
+        Squat: <input id = "squat" type = "number" min="0"></input>
         </br>
-        Squat <input id = "squat" type = "number" min="0"></input>
-        </br>
-        Deadlift <input id = "deadlift" type = "number" min="0"></input>
+        Deadlift: <input id = "deadlift" type = "number" min="0"></input>
         </br>
 
         <button onclick = submitData()>Submit</button>
-
+        </div>
     </div>
+    <div class = "container">
     </br>
-    <div class = "response" id="response"> </div>
+    <div class = "response" > <div class = "response-text" id="response"></div></div>
     </br>
 
     </br>
         <div class = "graph" id = "graph"> </div>
     </br>
+    </div>
+    </div>
     <div class = "message">This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org.
     </br> You may download a copy of the data at https://gitlab.com/openpowerlifting/opl-data.</div>
 </body>
@@ -77,6 +81,7 @@
         const lbs = document.getElementById('units').value
         const gender = document.getElementById('gender').value
         const weight = document.getElementById('weight').value
+
         try{
             const response = await fetch('http://127.0.0.1:5000/submit', {
                 method: 'POST',
@@ -98,18 +103,34 @@
     }
 
     async function loadHistogram() {
+        const bench = document.getElementById('bench').value;
+        const squat = document.getElementById('squat').value;
+        const deadlift = document.getElementById('deadlift').value;
+        const tested = document.getElementById('tested').checked;
+        const lbs = document.getElementById('units').value
+        const gender = document.getElementById('gender').value
+        const weight = document.getElementById('weight').value
+        const divElement = document.getElementById('graph');
+        const width = divElement.offsetWidth;
+        const height = divElement.offsetHeight;
+        const container = document.getElementById('graph');
+        container.innerHTML = '';
+
         try {
-            const response = await fetch('http://127.0.0.1:5000/histogram');
-            const container = document.getElementById('graph');
-            container.innerHTML = ''; 
+            const response = await fetch('http://127.0.0.1:5000/histogram', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({bench,squat,deadlift,tested,lbs,gender,weight,width,height}),
+            });
             if (!response.ok) throw new Error('No Data');
             const data = await response.json();
 
             const img = document.createElement('img');
             img.src = data.image;
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.border = 'solid black';
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '100%';
             container.appendChild(img);
         } catch (error) {
             console.error('Error generating histogram:', error);

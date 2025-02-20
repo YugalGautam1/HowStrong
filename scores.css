@@ -37,7 +37,6 @@ body{
     
 }
 .message{
-    background-color: rgb(180, 180, 180);
     border: 2px dotted #000;
     padding: 10px;           
     font-size: 50%;
