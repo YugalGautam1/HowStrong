@@ -84,6 +84,8 @@ body {
         width: 80%; 
     }
     .container{
-        width:80%;        
+        width:80%;  
+        min-height: 300px;
+      
     }
 }
