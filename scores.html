@@ -11,10 +11,13 @@
 </head>
 <body>
 <div>
-    <div class = "index"> <a href = '/index.html'><button>Calculate your powerlifting percentile</button></a> </div>
+    <div class = "percentiles"> <a href = '/index.html'><button>Calculate your powerlifting percentile</button></a> </div>
+    <div class = "title">Dots Calculator</div>
+
+    <div class = "mainholder">
 
     <div class = "choices">
-
+        <div class = "choices-text">
         Units: <select name = 'units' id = 'units'> 
             <option value ="0">kg</option>
             <option value="1">lbs</option>
@@ -37,12 +40,15 @@
         </br>
 
         <button onclick = submitData()>Submit</button>
-
+        </div>
     </div>
     </br>
-    <div class = "response" id="response"> </div>
-    </br>
+    <div class = "container">
 
+    <div class = "response" ><div class = "response-text" id="response"></div> </div>
+    </div>
+    </br>
+    </div>
 </div>
 
 </body>

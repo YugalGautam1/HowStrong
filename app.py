@@ -149,6 +149,8 @@ def line_histogram():
     weightclass = data.get('weight')
     total=0
     multiplier=1
+    width = data.get('width')
+    height = data.get('height')
 
     if(lbs=='1'):
         multiplier=2.20462
@@ -170,7 +172,8 @@ def line_histogram():
                 value = 39
         value+=int(weightclass)
     try:
-
+        width = float(width)
+        height = float(height)
         threshold = total
         data = data_table[value][1:]
 
@@ -180,7 +183,7 @@ def line_histogram():
         
         counts, bin_edges = np.histogram(data, bins="auto")
 
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(width//10,height//10))        
         plt.plot(bin_edges[:-1], counts, color='blue', linestyle='-')
 
         below_threshold = bin_edges[:-1] <= threshold 
@@ -201,8 +204,7 @@ def line_histogram():
 
         above_threshold = np.array(above_threshold)
         plt.fill_between(bin_edges[:-1], counts, where=above_threshold, color='red', alpha=0.3)
-
-        plt.title(f'All data below your Total is Blue', fontsize=16, fontweight='bold')
+        plt.title(f'All data below your Total is Blue', fontsize=width//10, fontweight='bold')
         plt.grid(False)
         plt.axis('off')
 

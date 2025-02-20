@@ -43,7 +43,7 @@ body {
     color: rgb(41, 48, 45);
     font-weight: 400;
     line-height: normal;
-    font-size: 150%;
+    font-size: 1.2em;
 
 }
 .graph {
@@ -68,7 +68,7 @@ body {
     color: rgb(41, 48, 45);
     font-weight: 400;
     line-height: normal;
-    font-size: 150%;
+    font-size: 1.2em;
     display: flex;
     align-items: center;
     justify-content: center;

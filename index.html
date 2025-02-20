@@ -131,6 +131,8 @@
             img.src = data.image;
             img.style.maxWidth = '100%';
             img.style.maxHeight = '100%';
+            img.style.borderRadius= '10px';
+
             container.appendChild(img);
         } catch (error) {
             console.error('Error generating histogram:', error);
