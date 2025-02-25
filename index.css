@@ -36,10 +36,13 @@ body {
     border-radius: 10px;
     border: 1px solid #1E1E1E;
     background: #7E8F92;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:10px;
 }
 .choices-text {
-    margin-top: 10%;
-    margin-left: 10%;
+
     font-family: Inter;
     color: rgb(41, 48, 45);
     font-weight: 400;
@@ -64,6 +67,10 @@ body {
     border-radius: 10px;
     border: 1px solid #000;
     background: #7E8F92;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 .response-text{
     font-family: Inter;
@@ -102,11 +109,15 @@ body {
     }
 
     .choices {
-        width: 80%; 
-    }
+        width: 80%;
+        max-width: 500px;
+        height: 100%;
+        flex-shrink: 0;
+        border-radius: 10px;
+        border: 1px solid #1E1E1E;
+        background: #7E8F92;    }
     .container{
         width:80%;    
         min-height: 300px;
-    
     }
 }

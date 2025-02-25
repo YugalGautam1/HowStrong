@@ -22,6 +22,11 @@
             <option value ="0">kg</option>
             <option value="1">lbs</option>
         </select>
+    </br>
+        Equipped: <select name = "equipped" id = "equipped">
+            <option value ="0">No</option>
+            <option value="1">Yes</option>
+        </select>
         <br>
         Your body weight:<input id = "weight" type = "number" min="0"></input>
         <div>
@@ -59,6 +64,8 @@
         const squat = document.getElementById('squat').value;
         const deadlift = document.getElementById('deadlift').value;
         const lbs = document.getElementById('units').value
+        const equipped = document.getElementById('equipped').value
+
         const gender = document.getElementById('gender').value
         const weight = document.getElementById('weight').value
         try{
@@ -67,7 +74,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({bench,squat,deadlift,lbs,gender,weight}),
+                body: JSON.stringify({bench,squat,deadlift,lbs,gender,weight,equipped}),
             });
             const data = await response.text();
             document.getElementById('response').innerText = data;
