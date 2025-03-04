@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Strong</title>
+    <link rel="stylesheet" href="workoutmaker.css">
+
+</head>
+<body>
+    <div class = "days-container" id="days-container"></div>
+    <button class = "add" onclick = addDay()>Add a day</button>
+    
+    <div class = "anchored_buttons">
+        <button class = "check" onclick = submitWorkout()> Check Workout </button>
+        <button class = "check" onclick = textify()>Export Workout as Text</button>
+    </div>
+</body>
+</html>
+
+<script>
+    let curr = 1; 
+    let exercisesList = []
+    async function fetchExercises() {
+        try {
+            let response = await fetch('http://127.0.0.1:5000/exerciseList');  
+            exercisesList = await response.json();
+        } catch (error) {
+            console.error("Could not get exercises:", error);
+        }
+    }
+    fetchExercises();
+    function addDay(){
+        
+        let container=document.getElementById('days-container'); 
+        let newday = document.createElement('div');
+        let name = document.createElement('p');
+        let black_bar = document.createElement('div');
+        let deleteb = document.createElement('button');
+        let addexer = document.createElement('button');
+        let exercises = document.createElement('div');
+        black_bar.appendChild(deleteb)
+        black_bar.appendChild(addexer)
+        black_bar.classList.add("black_bar");
+        exercises.classList.add("exercises_list");
+        newday.classList.add("day");
+
+        name.textContent = "Day " + curr;
+        deleteb.classList.add("delete_exercise_btn");
+        addexer.classList.add("add_exercise_btn");
+        deleteb.textContent = "x";
+        addexer.textContent = "+"
+
+
+
+        deleteb.onclick = function() {
+            container.removeChild(newday);
+            updateVals();    
+        };
+
+        addexer.onclick = function(){
+            
+            let deletee = document.createElement('button');
+            
+            
+            let newexercise = document.createElement('div');
+            newexercise.classList.add("exercise");
+
+            let exerciseselect = document.createElement('select');
+
+            exercisesList.forEach(exercise => {
+                let option = document.createElement('option');
+                option.value = exercise;
+                option.textContent = exercise;
+                exerciseselect.appendChild(option);
+            });
+
+
+            let addset = document.createElement('button');
+            addset.textContent='+';
+            addset.onclick = function(){
+                let repdiv = document.createElement('div');
+                repdiv.classList.add("reps");
+
+                let reps = document.createElement('input');
+                let rpe = document.createElement('input');
+                let deleterep = document.createElement('button');
+                deleterep.textContent = 'x';
+                repdiv.appendChild(reps);
+                repdiv.appendChild(rpe);
+                repdiv.appendChild(deleterep)
+                newexercise.append(repdiv);
+                deleterep.onclick = function(){
+                    newexercise.removeChild(repdiv);
+                }
+            }
+            deletee.textContent = "x";
+            deletee.onclick = function() {
+                exercises.removeChild(newexercise);
+            };
+            newexercise.append(exerciseselect);
+            newday.append(exercises);
+            newexercise.append(addset)
+            newexercise.append(deletee)
+
+            exercises.appendChild(newexercise);
+            
+            
+
+        }
+
+        curr+=1;
+        newday.appendChild(name);
+        newday.appendChild(black_bar);
+        newday.appendChild(exercises);
+        container.appendChild(newday);
+
+    }
+
+    function updateVals(){
+        let container=document.getElementById('days-container').children; 
+        curr = 1; 
+        for (let day of container) {
+                day.querySelector('p').textContent = "Day " + curr;
+                curr++;
+            }
+    }
+
+    function submitWorkout() {
+    let days = document.querySelectorAll(".day");
+    let workoutData = [];
+
+    days.forEach(day => {
+        let dayData = [];
+        let exercises = day.querySelectorAll(".exercise");
+
+        exercises.forEach(exercise => {
+            let exerciseName = exercise.querySelector("select").value;
+            let sets = [];
+
+            let setDivs = exercise.querySelectorAll(".reps");
+            setDivs.forEach(set => {
+                let reps = set.querySelector("input:nth-child(1)").value;
+                let rpe = set.querySelector("input:nth-child(2)").value;
+                sets.push([parseInt(reps) || 0, parseInt(rpe) || 0]);  
+            });
+
+            dayData.push([exerciseName, sets]);
+        });
+
+        workoutData.push(dayData);
+    });
+
+    fetch('http://127.0.0.1:5000/submitWorkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(workoutData)
+    })
+    .then(response => response.text()) 
+    .then(data => {
+        console.log("Workout submitted:", data);
+        if (data.trim() !== "") {  
+            let resultDiv = document.createElement('div');
+            resultDiv.textContent = data;
+            document.body.appendChild(resultDiv);
+        }
+    })
+    .catch(error => console.error("Error submitting workout:", error));
+}
+
+</script>

@@ -1,0 +1,121 @@
+body{
+    background-color: #CCD6FF;
+    display:flex;
+}
+.days-container{
+    width: 100%;
+    display:flex;
+    gap: 20px;
+    flex-wrap:wrap;
+    
+}
+.day p{
+    display:flex;
+    padding:5px;
+    margin-left:10px;
+    font-size:22px;
+}
+.check{
+    border-radius: 40px;
+    background: #917DFF;
+    width: 254px;
+    height: 45px;
+    border: none;
+    color: #FFF;
+
+    font-family: Mali;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+}
+
+.anchored_buttons{
+    bottom:10px;
+    position: fixed;
+    display:flex;
+    justify-content: center;
+    width:100%;
+    gap:50px;
+}
+
+.day{
+    width: 281px;
+    height: 354px;
+    border-radius: 30px;
+    background: #B8B1FF;
+    border: none;
+}
+.add{
+    right:10px;
+    position: fixed;
+    display:flex;
+    justify-content: center;
+    gap:50px;
+    border-radius: 40px;
+    background: #917DFF;
+    width: 80px;
+    height: 90px;
+    border: none;
+    color: #FFF;
+
+    font-family: Mali;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    align-items: center;
+}
+.black_bar{
+    background: #B8B1FF;
+    height: 25px;
+    margin: 0 20px;
+    text-align: right;
+}
+
+.add_exercise_btn{
+    background-color: rgb(49, 49, 49);
+    border:none;
+    height: 25px;
+
+}
+.delete_exercise_btn{
+    background-color: rgb(49, 49, 49);
+    border:none;
+    height: 25px;
+
+}
+
+.exercises_list{
+    background-color: rgb(44, 44, 44);
+    height: 205px;
+    margin: 0 20px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.exercise{
+    background-color: rgb(62, 62, 62);
+    margin:10px 0px;
+
+}
+
+.exercise select {
+    background-color: #717171; 
+    width:185px;
+}
+
+.exercise button{
+    margin-left:5px;
+    background-color: #717171; 
+    width:20px;
+}
+
+.reps{
+    margin-left:40px;
+}
+.reps input{
+    width: 30px;
+    
+}
