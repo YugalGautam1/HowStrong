@@ -13,7 +13,27 @@ app = Flask(__name__)
 CORS(app)
 @app.route("/exerciseList",methods=['GET'])
 def potato():
-    list = ["Bench","Squat","Deadlift"]
+    list = [
+        "Bench", 
+        "Squat", 
+        "Deadlift", 
+        "Tricep Pushdown (neutral grip)", 
+        "Tricep Pushdown (pronated grip)", 
+        "Tricep Pushdown (supinated grip)", 
+        "Flat Bench Press", 
+        "Highbar Back Squat", 
+        "Conventional Deadlift", 
+        "Tricep Dips", 
+        "Skull Crushers (Cable)", 
+        "Skull Crushers (Dumbbell)", 
+        "Skull Crushers (Barbell)", 
+        "Push Ups", 
+        "Dumbbell Bench Press (Flat)", 
+        "Sumo Deadlift", 
+        "Lowbar Back Squat", 
+        "Overhead Tricep Extension Dumbbell", 
+        "Overhead Tricep Extension Cable"
+    ]    
     return jsonify(list)
 
 @app.route("/submitWorkout",methods=['POST'])
