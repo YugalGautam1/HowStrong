@@ -20,11 +20,31 @@ def potato():
     list = []
     for i in range(1,len(data_table)):
         list+=[data_table[i][0]]
-    return jsonify(list)
+    return jsonify((list))
 
 @app.route("/submitWorkout",methods=['POST'])
 def hahahah():
-    data = request.json
-    return data
+    data = request.get_json()
+    return string(data)
+
+
+
+
+
+
+def string(list):
+    s = ""
+    for i in range(0,len(list)):
+        s+="Day " + str(i) + "<br>"
+        for j in range(0,len(list[i])):
+            s+="&emsp;"+ str(list[i][j][0]) + "<br>"
+            for k in (list[i][j][1]):
+                s+="&emsp; &emsp;" + str(k[0]) + " @ " + str(k[1]) + "<br>"
+
+        
+    return s
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

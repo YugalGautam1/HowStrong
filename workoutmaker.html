@@ -10,8 +10,12 @@
 <body>
     <div id = "overlay" class = "overlay">
         <div class = "overlay-inside">
-            <p class = "workout-response" id = "workout-response"></p>
-            <button class="close-overlay" onclick=closeOverlay()>X</button>
+            <div class = "workout-response" id = "workout-response">
+
+                <p class = "work-response-text" id="work-response-text"></p>
+                <button class="close-overlay" onclick=closeOverlay()>X</button>
+
+            </div>
 
         </div>
     </div>
@@ -134,7 +138,7 @@
             }
     }
 
-    function submitWorkout() {
+function submitWorkout() {
     let days = document.querySelectorAll(".day");
     let workoutData = [];
 
@@ -170,8 +174,8 @@
     .then(data => {
         console.log("Workout submitted:", data);
         if (data.trim() !== "") {  
-            let resultDiv = document.getElementById('workout-response');
-            resultDiv.textContent = data;
+            let resultDiv = document.getElementById('work-response-text');
+            resultDiv.innerHTML = data;
         }
     })
     .catch(error => console.error("Error submitting workout:", error));
@@ -186,4 +190,47 @@
 
     }
 
+
+    function textify(){
+        let days = document.querySelectorAll(".day");
+        let workoutData = [];
+
+        days.forEach(day => {
+            let dayData = [];
+            let exercises = day.querySelectorAll(".exercise");
+
+            exercises.forEach(exercise => {
+                let exerciseName = exercise.querySelector("select").value;
+                let sets = [];
+
+                let setDivs = exercise.querySelectorAll(".reps");
+                setDivs.forEach(set => {
+                    let reps = set.querySelector("input:nth-child(1)").value;
+                    let rpe = set.querySelector("input:nth-child(2)").value;
+                    sets.push([parseInt(reps) || 0, parseInt(rpe) || 0]);  
+                });
+
+                dayData.push([exerciseName, sets]);
+            });
+
+            workoutData.push(dayData);
+        });
+
+        fetch('http://127.0.0.1:5000/textifyWorkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(workoutData)
+        })
+        .then(response => response.text()) 
+        .then(data => {
+            console.log("Workout Export Procured:", data);
+            if (data.trim() !== "") {  
+ 
+            }
+        })
+        .catch(error => console.error("Error Procuring Export:", error));
+        
+    }
 </script>

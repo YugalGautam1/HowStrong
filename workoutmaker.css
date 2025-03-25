@@ -1,5 +1,5 @@
 body{
-    background-color: #CCD6FF;
+    background: #222829;
     display:flex;
 }
 .days-container{
@@ -17,7 +17,7 @@ body{
 }
 .check{
     border-radius: 40px;
-    background: #917DFF;
+    background: #7E8F92;
     width: 254px;
     height: 45px;
     border: none;
@@ -44,7 +44,7 @@ body{
     width: 281px;
     height: 354px;
     border-radius: 30px;
-    background: #B8B1FF;
+    background: #7e9284;
     border: none;
 }
 .add{
@@ -54,7 +54,7 @@ body{
     justify-content: center;
     gap:50px;
     border-radius: 40px;
-    background: #917DFF;
+    background: #7E8F92;
     width: 80px;
     height: 90px;
     border: none;
@@ -68,7 +68,7 @@ body{
     align-items: center;
 }
 .black_bar{
-    background: #B8B1FF;
+    background: #7e9284;
     height: 25px;
     margin: 0 20px;
     text-align: right;
@@ -146,4 +146,20 @@ body{
     width:1000px;
     height:700px;
     border-radius: 20px;
+    margin-top:30px;
+    padding-top:50px;
+    padding-left:50px;
+}
+
+
+
+.close-overlay{
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%); 
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;  
 }
