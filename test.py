@@ -13,7 +13,13 @@ app = Flask(__name__)
 CORS(app)
 @app.route("/exerciseList",methods=['GET'])
 def potato():
-    list = ["Bench","Squat","Deadlift"]
+    data_table=[]
+    with open('data/exercises.csv', 'r', encoding='utf-8') as file:
+        csv_reader = csv.reader(file)
+        data_table = [row for row in csv_reader]
+    list = []
+    for i in range(1,len(data_table)):
+        list+=[data_table[i][0]]
     return jsonify(list)
 
 @app.route("/submitWorkout",methods=['POST'])

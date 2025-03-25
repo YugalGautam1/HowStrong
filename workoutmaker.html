@@ -8,12 +8,20 @@
 
 </head>
 <body>
+    <div id = "overlay" class = "overlay">
+        <div class = "overlay-inside">
+            <p class = "workout-response" id = "workout-response"></p>
+            <button class="close-overlay" onclick=closeOverlay()>X</button>
+
+        </div>
+    </div>
     <div class = "days-container" id="days-container"></div>
     <button class = "add" onclick = addDay()>Add a day</button>
     
     <div class = "anchored_buttons">
         <button class = "check" onclick = submitWorkout()> Check Workout </button>
         <button class = "check" onclick = textify()>Export Workout as Text</button>
+        <button class = "responses" onclick = checked()> </button>
     </div>
 </body>
 </html>
@@ -162,12 +170,20 @@
     .then(data => {
         console.log("Workout submitted:", data);
         if (data.trim() !== "") {  
-            let resultDiv = document.createElement('div');
+            let resultDiv = document.getElementById('workout-response');
             resultDiv.textContent = data;
-            document.body.appendChild(resultDiv);
         }
     })
     .catch(error => console.error("Error submitting workout:", error));
-}
+    }
+
+    function checked(){
+        document.getElementById("overlay").style.display = "flex";
+
+    }
+    function closeOverlay(){
+        document.getElementById("overlay").style.display = "None";
+
+    }
 
 </script>
