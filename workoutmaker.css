@@ -124,8 +124,10 @@ body{
     bottom: 20px;
     right: 20px;
     width: 30px;
-    height: 100px;
-    background-color: green;
+    background-color: rgb(123, 161, 135);
+    border-radius:5px;
+    height: 25px;
+
 }
 
 .overlay {

@@ -22,7 +22,7 @@ def potato():
         list+=[data_table[i][0]]
     return jsonify((list))
 
-@app.route("/submitWorkout",methods=['POST'])
+@app.route("/textifyWorkout",methods=['POST'])
 def hahahah():
     data = request.get_json()
     return string(data)
@@ -35,13 +35,11 @@ def hahahah():
 def string(list):
     s = ""
     for i in range(0,len(list)):
-        s+="Day " + str(i) + "<br>"
+        s+="Day " + str(i) + "\n"
         for j in range(0,len(list[i])):
-            s+="&emsp;"+ str(list[i][j][0]) + "<br>"
+            s+="\t"+ str(list[i][j][0]) + "\n"
             for k in (list[i][j][1]):
-                s+="&emsp; &emsp;" + str(k[0]) + " @ " + str(k[1]) + "<br>"
-
-        
+                s+="\t \t" + str(k[0]) + " @ " + str(k[1]) + "\n"   
     return s
 
 

@@ -138,47 +138,8 @@
             }
     }
 
-function submitWorkout() {
-    let days = document.querySelectorAll(".day");
-    let workoutData = [];
+    function submitWorkout() {
 
-    days.forEach(day => {
-        let dayData = [];
-        let exercises = day.querySelectorAll(".exercise");
-
-        exercises.forEach(exercise => {
-            let exerciseName = exercise.querySelector("select").value;
-            let sets = [];
-
-            let setDivs = exercise.querySelectorAll(".reps");
-            setDivs.forEach(set => {
-                let reps = set.querySelector("input:nth-child(1)").value;
-                let rpe = set.querySelector("input:nth-child(2)").value;
-                sets.push([parseInt(reps) || 0, parseInt(rpe) || 0]);  
-            });
-
-            dayData.push([exerciseName, sets]);
-        });
-
-        workoutData.push(dayData);
-    });
-
-    fetch('http://127.0.0.1:5000/submitWorkout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(workoutData)
-    })
-    .then(response => response.text()) 
-    .then(data => {
-        console.log("Workout submitted:", data);
-        if (data.trim() !== "") {  
-            let resultDiv = document.getElementById('work-response-text');
-            resultDiv.innerHTML = data;
-        }
-    })
-    .catch(error => console.error("Error submitting workout:", error));
     }
 
     function checked(){
@@ -227,7 +188,15 @@ function submitWorkout() {
         .then(data => {
             console.log("Workout Export Procured:", data);
             if (data.trim() !== "") {  
- 
+                s = data;
+                console.log(s)
+                let blob = new Blob([s], { type: "text/plain" });
+                let a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = "workout_plan.txt";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             }
         })
         .catch(error => console.error("Error Procuring Export:", error));
