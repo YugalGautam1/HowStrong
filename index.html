@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+
+    <title>How Strong</title>
+</head>
+<body>
+<div class = "holder">
+    <h1 class = "title">How Strong</h1>
+    <div class = "Holder2">
+
+
+
+            <div class = "main"> 
+                <svg xmlns="http://www.w3.org/2000/svg" class = "potato" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell h-5 w-5 text-purple-400">
+                    <path d="M14.4 14.4 9.6 9.6"></path>
+                    <path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"></path>
+                    <path d="m21.5 21.5-1.4-1.4"></path><path d="M3.9 3.9 2.5 2.5">
+                    </path><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z">
+                    </path>
+                </svg>
+                <h1 class = "card-title">Lift Calculator </h1> 
+                <div class="divider"></div>
+                <div class = "label">  Units</div>
+
+                <label class = "checkbox-hold"> 
+                    <input type = "checkbox" id = "units" class = "checkbox-og"></input>
+                    <div class = "checkbox-back">
+                        <div id = "units-slider" class = "slider">Kg</div>
+                    </div>
+                </label>
+                <div class = "label"> Testing Status</div>
+
+                <label class = "checkbox-hold"> 
+                    <input type = "checkbox" id = "tested" class = "checkbox-og"></input>
+                    <div class = "checkbox-back">
+                        <div id = "tested-slider" class = "slider"> Tested</div>
+                    </div>
+                </label>
+                <p class = "low-desc" id = "testing-desc"> Drug tested competition standards</p>
+
+
+                <div class = "label"> Equipment Type</div>
+
+                <label class = "checkbox-hold"> 
+                    <input type = "checkbox" id = "equipment" class = "checkbox-og"></input>
+                    <div class = "checkbox-back">
+                        <div id = "equipment-slider" class = "slider"> Raw</div>
+                    </div>
+                </label>
+                <p class = "low-desc" id = "equipment-desc">Sleeves + Wrist Wraps Only</p>
+
+
+                <div class = "label"> Gender</div>
+
+                    <form class = "option-holder" id = "gender">
+                    <input class = "option" type="radio" id="male" name="gender" value="Male"> Male
+                    <input class = "option" type="radio" id="female" name="gender" value="Female"> Female
+                    <input class = "option" type="radio" id="all" name="gender" value="All" checked> All
+                    </form>
+
+                    <div class = "label">Weight Data</div>
+                    <div class="diff-label">
+                        <div class="weight-grid">
+                            <div class="weight-hold">
+                                <div class="weight-label">Body Weight</div>
+                                <input type="number" class="numin special" id="bodyweight" min="0">
+                            </div>
+
+                            <div class="weight-hold">
+                                <button class="remove" id = "remove-bench"></button>
+                                <div class="weight-label">Bench Press</div>
+                                <input type="number" class="numin" id="bench" min="0">
+                            </div>
+
+                            <div class="weight-hold">
+                                <button class="remove" id="remove-squat"></button>
+                                <div class="weight-label">Squat</div>
+                                <input type="number" class="numin" id="squat" min="0">
+                            </div>
+
+                            <div class="weight-hold">
+                                <button class="remove" id="remove-deadlift"></button>
+                                <div class="weight-label">Deadlift</div>
+                                <input type="number" class="numin" id="deadlift" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <button class = "submit" onclick="begin()">Calculate Results </button>
+            </div>
+
+
+              
+            <div class = "main_2"> 
+                <svg xmlns="http://www.w3.org/2000/svg" class = "potato" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award h-5 w-5 text-purple-400">
+                    <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
+                    <circle cx="12" cy="8" r="6"></circle></svg>
+                <h1 class = "card-title">Performance Metrics </h1> 
+                <div class="divider"></div>
+
+                <div class = "scores-holder">
+                    <div class = "dots-holder">
+                        <div class = "dots-title">DOTS Score</div>
+                        <div class = "score-1" id = "dots-score">-----  </div>
+                        <p class = "low-desc" id = "testing-desc"> Non IPF Standard Relative Strength Metric</p>
+                    </div>
+                    <div class = "dots-holder">
+                        <div class = "dots-title">IPF GL</div>
+                        <div class = "score-2"> ----- </div>
+                        <p class = "low-desc" id = "testing-desc">IPF Standard Relative Strength Metric</p>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+    
+    </div>
+
+    
+</div>
+    
+
+<div class = "notice">This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org.  <br> You may download a copy of the data at https://data.openpowerlifting.org.</div>
+</body>
+</html>
+
+<script>
+    const tested_checkbox = document.getElementById("tested" );
+    const test_slider = document.getElementById("tested-slider" );
+    const equipment_checkbox = document.getElementById("equipment" );
+    const equpiment_slider = document.getElementById("equipment-slider" ); 
+    const tested_desc = document.getElementById("testing-desc" ); 
+    const equipment_desc = document.getElementById("equipment-desc" ); 
+
+    const units_checkbox = document.getElementById("units" );
+    const units_slider = document.getElementById("units-slider" ); 
+    
+    tested_checkbox.addEventListener('change', () => {
+        if (tested_checkbox.checked) {
+            test_slider.textContent=""
+            test_slider.style.left = '380px';
+            test_slider.textContent = "Untested"
+            test_slider.style.backgroundColor = "rgb(51 65 85)";
+            tested_desc.textContent = "Non-Drug tested competition standards"
+
+        } else {
+            test_slider.textContent = ""
+            test_slider.style.left = '3px';
+            test_slider.textContent = "Tested"
+            test_slider.style.backgroundColor = "#7820cb";
+            tested_desc.textContent = "Drug tested competition standards"
+
+        }   
+    });
+    equipment_checkbox.addEventListener('change', () => {
+        if (equipment_checkbox.checked) {
+            equpiment_slider.textContent=""
+            equpiment_slider.style.left = '380px';
+            equpiment_slider.textContent = "Equipped"
+            equpiment_slider.style.backgroundColor = "rgb(51 65 85)";
+            equipment_desc.textContent = "Equipment such as straps, suits, and wraps allowed"
+
+
+        } else {
+            equpiment_slider.textContent = ""
+            equpiment_slider.style.left = '3px';
+            equpiment_slider.textContent = "Raw"
+            equpiment_slider.style.backgroundColor = "#7820cb";
+            equipment_desc.textContent = "Equipment such as straps, suits, and wraps allowed"
+            equipment_desc.textContent = "Sleeves + Wrist Wraps Only"
+
+        }   
+    });
+
+
+    units_checkbox.addEventListener('change', () => {
+        if (units_checkbox.checked) {
+            units_slider.textContent=""
+            units_slider.style.left = '380px';
+            units_slider.textContent = "Lb"
+            units_slider.style.backgroundColor = "rgb(51 65 85)";
+
+
+        } else {
+            units_checkbox.textContent = ""
+            units_slider.style.left = '3px';
+            units_slider.textContent = "Kg"
+            units_slider.style.backgroundColor = "#7820cb";
+
+        }   
+    });
+
+
+    function setupToggleButton(buttonId) {
+        document.getElementById(buttonId).addEventListener('click', function() {
+            this.classList.toggle('active');
+            
+            const weightHold = this.closest('.weight-hold');
+            const input = weightHold.querySelector('.numin');
+            const label = weightHold.querySelector('.weight-label');
+            
+            if (this.classList.contains('active')) {
+                input.disabled = true;
+                input.value = ''; 
+                label.classList.add('disabled');
+                this.style.transform = 'rotate(360deg)';
+            } else {
+                input.disabled = false;
+                input.value = '0';
+                label.classList.remove('disabled');
+                this.style.transform = 'rotate(0deg)';
+            }
+        });
+    }
+
+    setupToggleButton('remove-bench');
+    setupToggleButton('remove-squat');
+    setupToggleButton('remove-deadlift');
+
+
+    function getSelectedGender() {
+        const genderInputs = document.getElementsByName('gender');
+        for (const radio of genderInputs) {
+            if (radio.checked) {
+                return radio.value;
+            }
+        }
+        return 'All';
+    }
+
+    const gender = getSelectedGender();
+
+    async function begin(){
+        const units = document.getElementById("units").checked;
+        const equipment = document.getElementById("equipment").checked;
+        const gender = getSelectedGender();
+        const bodyweight = document.getElementById("bodyweight").value;
+        const bench = document.getElementById("bench").value;
+        const squat = document.getElementById("squat").value;
+        const deadlift = document.getElementById("deadlift").value;
+
+
+        try {
+
+            const response = await fetch("http://127.0.0.1:5000/submit", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                units: units,
+                equipment: equipment,
+                gender: gender,
+                bodyweight: bodyweight,
+                bench: bench,
+                squat: squat,
+                deadlift: deadlift,
+            })
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const dotsElement = document.getElementById("dots-score");
+            const ipfElement = document.querySelector(".score-2");
+            const data = await response.json();
+            dotsElement.textContent = data.dots;
+            ipfElement.textContent = data.ipf;
+
+
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('.numin');
+        inputs.forEach(input => {
+            input.value = '0';
+            input.min = '0';
+            input.addEventListener('input', function() {
+                if (this.value === '' || parseFloat(this.value) < 0) {
+                    this.value = '0';
+                }
+            });
+        });
+    });
+</script>
