@@ -13,6 +13,10 @@
     <div class = "Holder2">
 
 
+            <p class = "temp" id = "temp">
+                
+            </p>
+
 
             <div class = "main"> 
                 <svg xmlns="http://www.w3.org/2000/svg" class = "potato" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell h-5 w-5 text-purple-400">
@@ -67,29 +71,57 @@
                         <div class="weight-grid">
                             <div class="weight-hold">
                                 <div class="weight-label">Body Weight</div>
-                                <input type="number" class="numin special" id="bodyweight" min="0">
+                                <input type="number" class="numin special" id="bodyweight" >
                             </div>
 
                             <div class="weight-hold">
                                 <button class="remove" id = "remove-bench"></button>
                                 <div class="weight-label">Bench Press</div>
-                                <input type="number" class="numin" id="bench" min="0">
+                                <input type="number" class="numin" id="bench">
                             </div>
 
                             <div class="weight-hold">
                                 <button class="remove" id="remove-squat"></button>
                                 <div class="weight-label">Squat</div>
-                                <input type="number" class="numin" id="squat" min="0">
+                                <input type="number" class="numin" id="squat">
                             </div>
 
                             <div class="weight-hold">
                                 <button class="remove" id="remove-deadlift"></button>
                                 <div class="weight-label">Deadlift</div>
-                                <input type="number" class="numin" id="deadlift" min="0">
+                                <input type="number" class="numin" id="deadlift" >
                             </div>
                         </div>
                     </div>
 
+                <div class="advanced-section">
+                    <label class="advanced-toggle">
+                        <input type="checkbox" id="advanced-toggle" class="advanced-toggle-input">
+                        <span class="advanced-toggle-slider"></span>
+                        <span class="advanced-toggle-label">Advanced Filtering Options</span>
+                    </label>
+
+                    <div class="advanced-inputs" id="advanced-inputs">
+                        <div class="advanced-grid">
+                            <div class="advanced-hold">
+                                <div class="advanced-label">Min Age</div>
+                                <input type="number" class="numin" id="min-age" value = ''>
+                            </div>
+                            <div class="advanced-hold">
+                                <div class="advanced-label">Max Age</div>
+                                <input type="number" class="numin" id="max-age" value = '' >
+                            </div>
+                            <div class="advanced-hold">
+                                <div class="advanced-label">Min Weight</div>
+                                <input type="number" class="numin" id="min-weight" value = ''>
+                            </div>
+                            <div class="advanced-hold">
+                                <div class="advanced-label">Max Weight</div>
+                                <input type="number" class="numin" id="max-weight" value = ''>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                     <button class = "submit" onclick="begin()">Calculate Results </button>
             </div>
@@ -133,6 +165,9 @@
 </html>
 
 <script>
+
+
+
     const tested_checkbox = document.getElementById("tested" );
     const test_slider = document.getElementById("tested-slider" );
     const equipment_checkbox = document.getElementById("equipment" );
@@ -246,6 +281,11 @@
         const bench = document.getElementById("bench").value;
         const squat = document.getElementById("squat").value;
         const deadlift = document.getElementById("deadlift").value;
+        const minA = document.getElementById("min-age").value;
+        const maxA = document.getElementById("max-age").value;
+        const minW = document.getElementById("min-weight").value;
+        const maxW = document.getElementById("max-weight").value;
+        const tested = document.getElementById("tested").value;
 
 
         try {
@@ -280,6 +320,40 @@
         } catch (error) {
             console.error("Error:", error);
         }
+
+        try {
+
+            const response = await fetch("http://127.0.0.1:5000/finders", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                units: units,
+                equipment: equipment,
+                gender: gender,
+                bodyweight: bodyweight,
+                bench: bench,
+                squat: squat,
+                deadlift: deadlift,
+                minA : minA,
+                maxA : maxA, 
+                minW : minW,
+                maxW : maxW,
+                tested:tested,
+            })
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const data = await response.json();
+            const temporary = document.getElementById("temp");
+            temporary.textContent = data.percentile;
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -292,6 +366,58 @@
                     this.value = '0';
                 }
             });
+        });
+
+        document.getElementById('min-age').value = '';
+        document.getElementById('max-age').value = '';
+        document.getElementById('min-weight').value = '';
+        document.getElementById('max-weight').value = '';
+
+        const minAge = document.getElementById('min-age');
+        const maxAge = document.getElementById('max-age');
+        const minWeight = document.getElementById('min-weight');
+        const maxWeight = document.getElementById('max-weight');
+
+        function validateMinMax(minInput, maxInput) {
+            let minValue = 0;
+            let maxValue = 0;
+
+            if (minInput.value !== '') {
+                minValue = parseFloat(minInput.value);
+            }
+
+            if (maxInput.value !== '') {
+                maxValue = parseFloat(maxInput.value);
+            }
+            
+            if (maxValue < minValue) {
+                maxInput.value = minValue;
+            }
+        }
+
+        minAge.addEventListener('input', () => validateMinMax(minAge, maxAge));
+        minWeight.addEventListener('input', () => validateMinMax(minWeight, maxWeight));
+
+        const advancedToggle = document.getElementById('advanced-toggle');
+        const advancedInputs = document.getElementById('advanced-inputs');
+        const mainContainer = document.querySelector('.main');
+
+        advancedToggle.addEventListener('change', () => {
+            if (advancedToggle.checked) {
+                advancedInputs.classList.add('visible');
+                mainContainer.classList.add('expanded');
+                document.getElementById('min-age').value = 0;
+                document.getElementById('max-age').value = 0;
+                document.getElementById('min-weight').value = 0;
+                document.getElementById('max-weight').value = 0;
+            } else {
+                advancedInputs.classList.remove('visible');
+                mainContainer.classList.remove('expanded');
+                document.getElementById('min-age').value = '';
+                document.getElementById('max-age').value = '';
+                document.getElementById('min-weight').value = '';
+                document.getElementById('max-weight').value = '';
+            }
         });
     });
 </script>

@@ -1,3 +1,4 @@
+import csv
 from flask import Flask, request, jsonify
 from flask_cors import CORS 
 import math
@@ -6,8 +7,129 @@ app = Flask(__name__)
 CORS(app)
 
 
+S = []
+with open('data/S.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file)
+    S = [row for row in csv_reader]
+
+B = []
+with open('data/B.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file)
+    B = [row for row in csv_reader]
+
+SB = []
+with open('data/SB.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file)
+    SB = [row for row in csv_reader]
+
+SBD = []
+with open('data/SBD.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file)
+    SBD = [row for row in csv_reader]
+
+SD = []
+with open('data/SD.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file)
+    SD = [row for row in csv_reader]
+
+BD = []
+with open('data/BD.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file)
+    BD = [row for row in csv_reader]
+
+D = []
+with open('data/D.csv', 'r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file)
+    D = [row for row in csv_reader]
 
 
+@app.route('/finders',methods=['POST'])
+def percentile():
+    data = request.json
+    units = bool(data['units'])
+    total = 0 
+    equipped = bool(data['equipment'])
+    tested = bool(data['tested'])
+    gender = data['gender']
+    bench = (data['bench'])
+    squat = (data['squat'])
+    deadlift = (data['deadlift'])
+    minA = (data['minA'])
+    maxA = (data['maxA'])
+    minW = (data['minW'])
+    maxW = (data['maxW'])
+
+    currData = []
+    total = 0
+    if(bench=='' and squat=='' and deadlift ==''):
+        return jsonify({"percentile" :"No people within these parameters"})
+    elif(bench=='' and squat!='' and deadlift ==''):
+        currData = S
+        total = float(squat)
+    elif(bench!='' and squat=='' and deadlift ==''):
+        currData = B
+        total = float(bench)
+    elif(bench!='' and squat!='' and deadlift ==''):
+        currData = SB
+        total = float(squat)+float(bench)
+    elif(bench=='' and squat!='' and deadlift !=''):
+        currData = SD
+        total = float(squat)+float(deadlift)
+    elif(bench!='' and squat=='' and deadlift !=''):
+        currData = BD
+        total = float(bench)+float(deadlift)
+    elif(bench=='' and squat=='' and deadlift !=''):
+        currData = D
+        total =float(deadlift)
+    else:
+        currData = SBD
+        total = float(squat)+float(bench)+float(deadlift)
+
+    if(minW!=''):
+        minW = float(minW)
+        maxW = float(maxW)
+        minA = float(minA)
+        maxA = float(maxA)
+
+    if(units):
+        total=total/2.2046226218488
+        if(minW!=''):
+            minW = minW/2.2046226218488
+            maxW = maxW/2.2046226218488
+
+    numfull = 0
+    you = 0
+
+    for i in range(0,len(currData)):
+        if(currData[i][6]!=''):
+            if((equipped and currData[i][1]=="True") or ((not equipped) and currData[i][1]=="False")):
+                if(gender=="All" or (gender=="Male" and currData[i][0]=="M") or (gender=="Female" and currData[i][0]=="F")):
+                    if((tested and currData[i][7]=="Yes") or not tested):
+                        if(minA == ''):
+                            if(total>float(currData[i][6])):
+                                you+=1
+                            numfull+=1
+
+                        elif((currData[i][8]!="" and currData[i][2]!="")):
+                            age = float(currData[i][2])
+                            weight = float(currData[i][8])
+                            if(minA<=age and maxA>=age and minW<=weight and maxW>=weight):
+                                if(total>float(currData[i][6])):
+                                    you+=1
+                                numfull+=1
+    
+                            
+    if(numfull==0):
+        return jsonify({"percentile" :"No people within these parameters"})
+
+    you = float(you)
+    numfull = float(numfull)
+    potatotired = round((you/numfull) *100,2) 
+
+
+
+    return jsonify({"percentile" :"You are stronger than " + str(potatotired) + "% of people within these parameters"})
+    
 def ipfFun(total, bodyweight, coeffificents, roundint):
     if(bodyweight<28):
         bodyweight=28
