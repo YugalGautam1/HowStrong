@@ -8,14 +8,11 @@
     <title>How Strong</title>
 </head>
 <body>
+<div class = "paddingAttempt"></div>
+
 <div class = "holder">
     <h1 class = "title">How Strong</h1>
     <div class = "Holder2">
-
-
-            <p class = "temp" id = "temp">
-                
-            </p>
 
 
             <div class = "main"> 
@@ -126,37 +123,41 @@
                     <button class = "submit" onclick="begin()">Calculate Results </button>
             </div>
 
-
               
-            <div class = "main_2"> 
-                <svg xmlns="http://www.w3.org/2000/svg" class = "potato" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award h-5 w-5 text-purple-400">
-                    <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
-                    <circle cx="12" cy="8" r="6"></circle></svg>
-                <h1 class = "card-title">Performance Metrics </h1> 
-                <div class="divider"></div>
+            <div class="right-column">
+                <div class = "main_2"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" class = "potato" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award h-5 w-5 text-purple-400">
+                        <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
+                        <circle cx="12" cy="8" r="6"></circle></svg>
+                    <h1 class = "card-title">Performance Metrics </h1> 
+                    <div class="divider"></div>
 
-                <div class = "scores-holder">
-                    <div class = "dots-holder">
-                        <div class = "dots-title">DOTS Score</div>
-                        <div class = "score-1" id = "dots-score">-----  </div>
-                        <p class = "low-desc" id = "testing-desc"> Non IPF Standard Relative Strength Metric</p>
+                    <div class = "scores-holder">
+                        <div class = "dots-holder">
+                            <div class = "dots-title">DOTS Score</div>
+                            <div class = "score-1" id = "dots-score">-----  </div>
+                            <p class = "low-desc" id = "testing-desc"> Non IPF Standard Relative Strength Metric</p>
+                        </div>
+                        <div class = "dots-holder">
+                            <div class = "dots-title">IPF GL</div>
+                            <div class = "score-2"> ----- </div>
+                            <p class = "low-desc" id = "testing-desc">IPF Standard Relative Strength Metric</p>
+                        </div>
                     </div>
-                    <div class = "dots-holder">
-                        <div class = "dots-title">IPF GL</div>
-                        <div class = "score-2"> ----- </div>
-                        <p class = "low-desc" id = "testing-desc">IPF Standard Relative Strength Metric</p>
 
-                    </div>
-
-
+                    <div class="percentile-score" id="percentile-score"></div>
                 </div>
 
+                <div class="graph-container" style = "display: none">
+                    <button class="close-graph" onclick="closeGraph()"></button>
+                    <img id="percentile-graph" class="percentile-graph" style="display: none;" alt="Percentile Distribution Graph">
+                </div>
+            
+            <div class = "notice2" >This page uses data from the OpenPowerlifting project, https://www.openpowerlifting.org.  <br> You may download a copy of the data at https://data.openpowerlifting.org.</div>
+
             </div>
-
-    
+        </div>
     </div>
-
-    
 </div>
     
 
@@ -181,37 +182,33 @@
     tested_checkbox.addEventListener('change', () => {
         if (tested_checkbox.checked) {
             test_slider.textContent=""
-            test_slider.style.left = '380px';
+            const containerWidth = test_slider.parentElement.offsetWidth;
+            test_slider.style.left = (containerWidth - test_slider.offsetWidth - 3) + 'px';
             test_slider.textContent = "Untested"
             test_slider.style.backgroundColor = "rgb(51 65 85)";
             tested_desc.textContent = "Non-Drug tested competition standards"
-
         } else {
             test_slider.textContent = ""
             test_slider.style.left = '3px';
             test_slider.textContent = "Tested"
             test_slider.style.backgroundColor = "#7820cb";
             tested_desc.textContent = "Drug tested competition standards"
-
         }   
     });
     equipment_checkbox.addEventListener('change', () => {
         if (equipment_checkbox.checked) {
             equpiment_slider.textContent=""
-            equpiment_slider.style.left = '380px';
+            const containerWidth = equpiment_slider.parentElement.offsetWidth;
+            equpiment_slider.style.left = (containerWidth - equpiment_slider.offsetWidth - 3) + 'px';
             equpiment_slider.textContent = "Equipped"
             equpiment_slider.style.backgroundColor = "rgb(51 65 85)";
             equipment_desc.textContent = "Equipment such as straps, suits, and wraps allowed"
-
-
         } else {
             equpiment_slider.textContent = ""
             equpiment_slider.style.left = '3px';
             equpiment_slider.textContent = "Raw"
             equpiment_slider.style.backgroundColor = "#7820cb";
-            equipment_desc.textContent = "Equipment such as straps, suits, and wraps allowed"
             equipment_desc.textContent = "Sleeves + Wrist Wraps Only"
-
         }   
     });
 
@@ -219,7 +216,8 @@
     units_checkbox.addEventListener('change', () => {
         if (units_checkbox.checked) {
             units_slider.textContent=""
-            units_slider.style.left = '380px';
+            const containerWidth = units_slider.parentElement.offsetWidth;
+            units_slider.style.left = (containerWidth - units_slider.offsetWidth - 3) + 'px';
             units_slider.textContent = "Lb"
             units_slider.style.backgroundColor = "rgb(51 65 85)";
 
@@ -321,6 +319,13 @@
             console.error("Error:", error);
         }
 
+        const percentileElement = document.getElementById("percentile-score");
+        const graphElement = document.getElementById("percentile-graph");
+        const graphContainer = document.querySelector(".graph-container");
+        graphContainer.style.display = 'block';
+        graphElement.src = "Bounce.gif";
+        graphElement.style.display = 'block';
+        graphElement.style.backgroundColor= "rgba(30, 41, 59, 0.5)";
         try {
 
             const response = await fetch("http://127.0.0.1:5000/finders", {
@@ -348,8 +353,17 @@
                 throw new Error("Network response was not ok");
             }
             const data = await response.json();
-            const temporary = document.getElementById("temp");
-            temporary.textContent = data.percentile;
+
+            percentileElement.textContent = data.percentile;
+            graphElement.style.backgroundColor = "transparent";
+            if (data.image && data.image !== '') {
+                graphElement.src = data.image;
+                graphElement.style.display = 'block';
+                graphContainer.style.display = 'block';
+            } else {
+                graphElement.style.display = 'none';
+                graphContainer.style.display = 'none';
+            }
 
         } catch (error) {
             console.error("Error:", error);
@@ -377,6 +391,8 @@
         const maxAge = document.getElementById('max-age');
         const minWeight = document.getElementById('min-weight');
         const maxWeight = document.getElementById('max-weight');
+
+
 
         function validateMinMax(minInput, maxInput) {
             let minValue = 0;
@@ -420,4 +436,11 @@
             }
         });
     });
+
+    function closeGraph() {
+        const graphContainer = document.querySelector(".graph-container");
+        const graphElement = document.getElementById("percentile-graph");
+        graphContainer.style.display = 'none';
+        graphElement.style.display = 'none';
+    }
 </script>

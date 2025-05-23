@@ -2,9 +2,19 @@ import csv
 from flask import Flask, request, jsonify
 from flask_cors import CORS 
 import math
+import matplotlib
+matplotlib.use('Agg')
+import numpy as np
+import base64
+import io
+from scipy.ndimage import gaussian_filter1d
+
+import matplotlib.pyplot as plt
+
 
 app = Flask(__name__)
 CORS(app)
+
 
 
 S = []
@@ -42,6 +52,34 @@ with open('data/D.csv', 'r', encoding='utf-8') as file:
     csv_reader = csv.reader(file)
     D = [row for row in csv_reader]
 
+def picturemaker(arr,you):
+        threshold = you
+        data = np.array(arr)
+        
+        counts, bin_edges = np.histogram(data, bins=100)
+        
+        smoothed_counts = gaussian_filter1d(counts, sigma=2)
+
+        plt.figure(figsize=(60,40))        
+        plt.plot(bin_edges[:-1], smoothed_counts, color='#a855f7', linestyle='-', linewidth=2)
+
+        below_threshold = bin_edges[:-1] <= threshold 
+        plt.fill_between(bin_edges[:-1], smoothed_counts, where=below_threshold, color='#a855f7', alpha=0.3)
+        
+
+        
+        plt.grid(False)
+        plt.axis('off')
+
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight', transparent=True, facecolor=(30/255, 41/255, 59/255, 0.5))  
+
+        buffer.seek(0)
+        plt.close()
+
+        image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+
+        return  f"data:image/png;base64,{image_base64}"
 
 @app.route('/finders',methods=['POST'])
 def percentile():
@@ -62,7 +100,8 @@ def percentile():
     currData = []
     total = 0
     if(bench=='' and squat=='' and deadlift ==''):
-        return jsonify({"percentile" :"No people within these parameters"})
+        return jsonify({"percentile" :"No people within these parameters",
+                        "image": ''})
     elif(bench=='' and squat!='' and deadlift ==''):
         currData = S
         total = float(squat)
@@ -84,12 +123,15 @@ def percentile():
     else:
         currData = SBD
         total = float(squat)+float(bench)+float(deadlift)
+    parameters = ""
 
     if(minW!=''):
         minW = float(minW)
         maxW = float(maxW)
         minA = float(minA)
         maxA = float(maxA)
+        parameters += "within these parameters"
+
 
     if(units):
         total=total/2.2046226218488
@@ -97,9 +139,11 @@ def percentile():
             minW = minW/2.2046226218488
             maxW = maxW/2.2046226218488
 
+
+
     numfull = 0
     you = 0
-
+    values = []
     for i in range(0,len(currData)):
         if(currData[i][6]!=''):
             if((equipped and currData[i][1]=="True") or ((not equipped) and currData[i][1]=="False")):
@@ -108,6 +152,7 @@ def percentile():
                         if(minA == ''):
                             if(total>float(currData[i][6])):
                                 you+=1
+                            values+=[float(currData[i][6])]
                             numfull+=1
 
                         elif((currData[i][8]!="" and currData[i][2]!="")):
@@ -116,19 +161,21 @@ def percentile():
                             if(minA<=age and maxA>=age and minW<=weight and maxW>=weight):
                                 if(total>float(currData[i][6])):
                                     you+=1
+                                values+=[float(currData[i][6])]
                                 numfull+=1
     
                             
     if(numfull==0):
-        return jsonify({"percentile" :"No people within these parameters"})
+        return jsonify({"percentile" :"No people within these parameters",
+                        "image": ''})
 
     you = float(you)
     numfull = float(numfull)
     potatotired = round((you/numfull) *100,2) 
 
 
-
-    return jsonify({"percentile" :"You are stronger than " + str(potatotired) + "% of people within these parameters"})
+    return jsonify({"percentile" :"You are stronger than " + str(potatotired) + "% of people " + parameters,
+                    "image":picturemaker(values,total)})
     
 def ipfFun(total, bodyweight, coeffificents, roundint):
     if(bodyweight<28):
